@@ -29,7 +29,7 @@ io.on('connection', socket => {
     // 유저 환영
     socket.emit('message', formatMessage(botName, `${username}님 서버 입장 환영합니다!`));
 
-    // 유저 접속시 전송
+    // 유저 접속시 전송(접속 유저 제외)
     socket.broadcast
       .to(user.room)
       .emit(
@@ -61,7 +61,7 @@ io.on('connection', socket => {
         formatMessage(botName, `${user.username}님이 서버를 떠나셨습니다.`)
       );
 
-      // Send users and room info
+      // 유저 목록과 서버의 정보 전송
       io.to(user.room).emit('roomUsers', {
         room: user.room,
         users: getRoomUsers(user.room)
@@ -70,6 +70,8 @@ io.on('connection', socket => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
-server.listen(PORT, () => console.log(`${PORT}포트에서 서버 실행`));
+server.listen(PORT, () =>
+    console.log(`${PORT}포트에서 서버 실행`)
+);
